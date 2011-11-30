@@ -1,0 +1,69 @@
+/* 
+    Document   : searchBox
+    Created on : Nov 28, 2011, 8:31:57 PM
+    Author     : ordinary people
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+
+#searchBox {
+    height: 320px;
+    width: 780px;
+    border: #CCC 3px solid;
+    margin:10px;
+    padding: 20px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
+
+/* #searchBox a {color:#0092dd;} */
+#searchBox p {
+     font-family:Arial, Helvetica, Sans-Serif;  
+     color:#6b6b6b; 
+     font-size:18px;
+     margin: 0px;
+     padding: 0px;
+     padding-left: 12px;
+     
+}
+
+
+
+.searchBoxRowContainer {
+    height: 75px;
+    width: 755px;
+/*    border: #CCC 1px solid;*/
+    margin: 5px;
+    margin-left: 20px;
+}
+
+.searchBoxDropdownContainer{
+    height: 60px;
+    width: 360px;
+/*    border: #CCC 1px solid;*/
+    margin: 5px;
+    float: left;
+}
+
+.searchBoxTimepicker{
+    margin: 5px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+}
+
+#searchBox button {
+    color:#08233e;
+    font:20px Futura, "Century Gothic", AppleGothic, sans-serif;
+    padding:7px;
+    margin: 5px;
+/*    margin-right: 50px;
+    float: right;*/
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+}
