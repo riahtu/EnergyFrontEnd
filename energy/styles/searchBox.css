@@ -38,15 +38,15 @@
 .searchBoxRowContainer {
     height: 75px;
     width: 755px;
-/*    border: #CCC 1px solid;*/
+    border: #CCC 1px solid;
     margin: 5px;
     margin-left: 20px;
 }
 
-.searchBoxDropdownContainer{
+.searchBoxWidgetContainer{
     height: 60px;
     width: 360px;
-/*    border: #CCC 1px solid;*/
+    border: #CCC 1px solid;
     margin: 5px;
     float: left;
 }

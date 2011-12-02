@@ -6,4 +6,4 @@
 <script type="text/javascript" src="./js/searchBox.js"> </script>
 <script type="text/javascript" src="./js/searchBoxDropdown.js"> </script>
 
-<script type="text/javascript" src="./js/errors.js"> </script>
+<!--<script type="text/javascript" src="./js/errors.js"> </script>-->

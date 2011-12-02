@@ -31,6 +31,7 @@ try {
 
         box = new SearchBox("full", "init", bldArray, dpmtArray, srvArray, -1, -1, -1, -1, -1); 
         box.draw("searchBox")
+//        box.generateSubmitButton("searchBox", "Sumbit Query", this.bldddID);
 	
 //AnyTime.picker( "field1", { format: "%Y-%m-%d %H:%i:%s %E %#", formatUtcOffset: "%: (%@)", firstDOW: 1 } );
 //

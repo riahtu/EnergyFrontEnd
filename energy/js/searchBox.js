@@ -1,92 +1,62 @@
 // JavaScript Document
 
 // Search Box Class
-function SearchBox(type, status, bldArray, dpmtArray, srvArray,
-        bldID, dpmtID, srvID, beginTime, endTime){
+function SearchBox(bldArray, dpmtArray, srvArray){
             
     // properties
-    this.type = type   // type of search box. Values:
-                       // "full" - search all info
-                       // "time" - search time only 
-                       //      and other info have been pre-selected.
-    this.status = status   // status of the search. Values:
-                           // "init" - no properties set
-                           // "bldSelected"
-                           // "dpmtSelected"
-                           // "srvSelected"
-                           // "beginTimeSelected"
-                           // "endTimeSelected"
-							
-    this.bldID = bldID   // set to -1 if not selected
-    this.dpmtID = dpmtID // set to -1 if not selected
-    this.srvID = srvID   // set to -1 if not selected
-    this.beginTime = beginTime	// set to -1 if not selected
-    this.endTime = endTime   // set to -1 if not selected
-    
+    SearchBox.prototype.timepickerLength = 30;
+    SearchBox.prototype.invalidID = -1; // invalid slected id
+    SearchBox.prototype.invalidTime = "";
+                                        //
     SearchBox.prototype.bldArray = bldArray  // format: (id | name | beginTime | endTime)
     SearchBox.prototype.dpmtArray = dpmtArray  // format: (id | name | beginTime | endTime)
     SearchBox.prototype.srvArray = srvArray  // format: (bldID | dpmtID | srvID | name | beginTime | endTime)
-
+							
+    SearchBox.prototype.bldID = null
+    SearchBox.prototype.dpmtID = null
+    SearchBox.prototype.srvID = null
+    SearchBox.prototype.beginTimeID = null
+    SearchBox.prototype.endTimeID = null
+    SearchBox.prototype.submitID = null
+    
     // methods
-    this.draw = draw
-    this.generateDropDown = generateDropDown
-    this.generateTimepicker = generateTimepicker
-    this.generateSubmitButton = generateSubmitButton
-
-    // check initial values
-    if (this.type!="full" && this.type!="time"){
-        printError("SEARCHBOX_INCORRECT_TYPE")
-    } else if ( this.type=="full" && this.status!="init" ){
-        printError("SEARCHBOX_INCORRECT_STATUS")
-    } else if (this.type=="time" && (this.status!="bldSelected" && 
-            this.status!="dpmtSelected" && this.status!="srvSelected") ) {
-        printError("SEARCHBOX_INCORRECT_STATUS")     
-    } else if (this.type=="time" && this.status=="bldSelected" && 
-            (this.bldID==undefined||this.bldID<0)) {
-        printError("SEARCHBOX_INCORRECT_ID")
-    } else if (this.type=="time" && this.status=="dpmtSelected" && 
-            (this.dpmtID==undefined||this.dpmtID<0)) {
-        printError("SEARCHBOX_INCORRECT_ID")
-    } else if (this.type=="time" && this.status=="srvSelected" && 
-            (this.dpmtID==undefined||this.srvID<0)) {
-        printError("SEARCHBOX_INCORRECT_ID")
-    }
-	
+    SearchBox.prototype.draw = draw
+    SearchBox.prototype.generateDropDown = generateDropDown
+    SearchBox.prototype.generateTimepicker = generateTimepicker
+    SearchBox.prototype.generateSubmitButton = generateSubmitButton
+    SearchBox.prototype.validate = validate
+    SearchBox.prototype.validateAux = validateAux
+    SearchBox.prototype.end = end
 }
+
+
 
 function draw(searchDiv){
     var root = document.getElementById(searchDiv);
-    var curNode;
-    if (this.type=="full"){
-        for (var j=0; j<4; j++){
-            curNode = document.createElement("div");
-            curNode.setAttribute("class", "searchBoxRowContainer");  
-            root.appendChild(curNode);
-        }
+    var curNode, childNode;
 
-        for (j=0; j<4; j++){
-            for (var t=0; t<2; t++){
-                curNode = document.createElement("div");
-                curNode.setAttribute("class", "searchBoxDropdownContainer");
-                curNode.setAttribute("id", "sbdc"+j+t);  
-                root.children[j].appendChild(curNode);               
-            }
+    for (var j=0; j<4; j++){
+        curNode = document.createElement("div");
+        curNode.setAttribute("class", "searchBoxRowContainer");  
+        root.appendChild(curNode);
+        for (var t=0; t<2; t++){
+            childNode = document.createElement("div");
+            childNode.setAttribute("class", "searchBoxWidgetContainer");
+            childNode.setAttribute("id", "sbdc"+j+t);  
+            curNode.appendChild(childNode);               
         }
-        
-        this.bldddID = generateDropDown(this.bldArray, 1, 0, "sbdc00", "Buildings");
-        this.dpmtNode = generateDropDown(this.dpmtArray, 1, 0, "sbdc01", "Departments");
-        this.srvNode = generateDropDown(this.srvArray, 3, 2, "sbdc10", "Services");
-        
-        this.beginTimeNode = generateTimepicker("sbdc20", "Begin Time", 30);
-        this.endTimeNode = generateTimepicker("sbdc21", "End Time", 30);
-        
-        this.submitNode = generateSubmitButton("sbdc30", "Sumbit Query", this.bldddID);
-        
-    } else if (this.type=="time"){
-       
-    } else {
-        printError("SEARCHBOX_INCORRECT_TYPE")
     }
+
+    SearchBox.prototype.bldID = generateDropDown(SearchBox.prototype.bldArray, 1, 0, "sbdc00", "Buildings");
+    SearchBox.prototype.dpmtID = generateDropDown(this.dpmtArray, 1, 0, "sbdc01", "Departments");
+    SearchBox.prototype.srvID = generateDropDown(this.srvArray, 3, 2, "sbdc10", "Services");
+    SearchBox.prototype.beginTimeID = generateTimepicker("sbdc20", "Begin Time", SearchBox.prototype.timepickerLength);
+    SearchBox.prototype.endTimeID = generateTimepicker("sbdc21", "End Time", SearchBox.prototype.timepickerLength);
+    SearchBox.prototype.submitID = generateSubmitButton("sbdc30", "Sumbit Query");
+
+//    SearchBox.prototype.submitNode = generateSubmitButton("sbdc30", "Sumbit Query", SearchBox.prototype.bldddID);
+        
+
 }
 
 
@@ -102,13 +72,13 @@ function generateDropDown(matrix, NameIndex, IdIndex, parentID, myName) {
     parent.appendChild(curNode);
     parent = curNode;
 
-
+    /* set the first row as an invalid choice */
     curNode = document.createElement("option")
-    curNode.setAttribute("selected", true);
-    
+    curNode.setAttribute("selected", true);  
+    curNode.setAttribute("value", SearchBox.prototype.invalidID);
     curNode.appendChild(document.createTextNode("-- Please Choose A " + myName.substring(0, myName.length-1) + " --"));
     parent.appendChild(curNode);
-
+    
     for (var j=0; j<matrix.length; j++) {
         curNode = document.createElement("option")
         curNode.setAttribute("value", matrix[j][IdIndex]);
@@ -128,6 +98,7 @@ function generateTimepicker(parentID, myName, size){
     curNode.setAttribute("id", myID);
     curNode.setAttribute("type", "text");
     curNode.setAttribute("size", size);
+//    curNode.setAttribute("value", null);
     curNode.setAttribute("class", "searchBoxTimepicker");
     var desc = document.createElement("p");
     desc.appendChild(document.createTextNode(myName));
@@ -141,20 +112,48 @@ function generateTimepicker(parentID, myName, size){
 }
 
 
-function generateSubmitButton(parentID, myName, bldddID){
+function generateSubmitButton(parentID, myName){
+    
     var parent = document.getElementById(parentID);
     var curNode = document.createElement("button");
     var myID = "submitbotton" + myName;
     curNode.setAttribute("id", myID);
     curNode.appendChild(document.createTextNode(myName));
     parent.appendChild(curNode);
+      
+    return myID;
+}
 
-    var bldNode = document.getElementById(bldddID);
-//    alert(bldNode.options[bldNode.selectedIndex].value);
+function validate(){
+    var curNode = document.getElementById(SearchBox.prototype.submitID);
+    curNode.setAttribute("onclick", "return validateAux()");
 
-    var myIDjq = "#" + myID;
-    $(myIDjq).click(function() {
-      alert('Handler for .click() called.');
-    });
+}
+
+function validateAux(){
+    var bldNode = document.getElementById(SearchBox.prototype.bldID);
+    var dpmtNode = document.getElementById(SearchBox.prototype.dpmtID);
+    var srvNode = document.getElementById(SearchBox.prototype.srvID);
+
+    var bld = bldNode.options[bldNode.selectedIndex].value;
+    var dpmt = dpmtNode.options[dpmtNode.selectedIndex].value;
+    var srv = srvNode.options[srvNode.selectedIndex].value;
+    var btm = document.getElementById(SearchBox.prototype.beginTimeID).value;
+    var etm = document.getElementById(SearchBox.prototype.endTimeID).value;
+    
+    var txt = "Selected Bld: " + bld + "; ";
+    txt +=  "Selected Dpmt: " + dpmt + "; ";
+    txt +=  "Selected Srv: " + srv + "; ";
+    txt +=  "Selected Begin Time: " + btm + "; ";
+    txt +=  "Selected BEnd Time: " + etm + ". ";
+    
+    if (btm==null || btm==SearchBox.prototype.invalidTime){
+          alert(txt);
+    }
+
+}
+
+
+function end(){
     
 }
