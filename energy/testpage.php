@@ -15,12 +15,21 @@ and open the template in the editor.
     </head>
     <body>
         <div id="searchBox" class="searchBox_full">
+<!-- test searchBox.js begin-->
+<!--        
         <script> 
-            box = new SearchBox(bldArray, dpmtArray, srvArray); 
+            box = new SearchBox(bldArray1, dpmtArray1, srvArray1); 
             box.draw("searchBox");
             box.validate();
             box.end();
-            
-        </script>
+           
+        </script>-->
+<!--test searchBox.js end -->
+
+    <?php 
+    require_once 'dataManager.php';
+    $manager = new DataManager();
+    $manager->createSearchBox("searchBox", "sBox");
+    ?>
     </body>
 </html>

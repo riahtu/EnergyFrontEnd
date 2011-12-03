@@ -7,7 +7,27 @@ function SearchBox(bldArray, dpmtArray, srvArray){
     SearchBox.prototype.timepickerLength = 30;
     SearchBox.prototype.invalidID = -1; // invalid slected id
     SearchBox.prototype.invalidTime = "";
-                                        //
+    SearchBox.prototype.invalidUnixtime = -1;
+    SearchBox.prototype.url = "./results.php";
+    SearchBox.prototype.bldArrayNames = {
+        "name": "bld_name",
+        "id": "bld_id",
+        "begin": "begin_time",
+        "end": "emd_time"
+    };
+    SearchBox.prototype.dpmtArrayNames = {
+        "name": "dpmt_name",
+        "id": "dpmt_id",
+        "begin": "begin_time",
+        "end": "emd_time"
+    };
+    SearchBox.prototype.srvArrayNames = {
+        "name": "srv_name",
+        "id": "srv_id",
+        "begin": "begin_time",
+        "end": "emd_time"
+    };
+
     SearchBox.prototype.bldArray = bldArray  // format: (id | name | beginTime | endTime)
     SearchBox.prototype.dpmtArray = dpmtArray  // format: (id | name | beginTime | endTime)
     SearchBox.prototype.srvArray = srvArray  // format: (bldID | dpmtID | srvID | name | beginTime | endTime)
@@ -47,11 +67,22 @@ function draw(searchDiv){
         }
     }
 
-    SearchBox.prototype.bldID = generateDropDown(SearchBox.prototype.bldArray, 1, 0, "sbdc00", "Buildings");
-    SearchBox.prototype.dpmtID = generateDropDown(this.dpmtArray, 1, 0, "sbdc01", "Departments");
-    SearchBox.prototype.srvID = generateDropDown(this.srvArray, 3, 2, "sbdc10", "Services");
-    SearchBox.prototype.beginTimeID = generateTimepicker("sbdc20", "Begin Time", SearchBox.prototype.timepickerLength);
-    SearchBox.prototype.endTimeID = generateTimepicker("sbdc21", "End Time", SearchBox.prototype.timepickerLength);
+    SearchBox.prototype.bldID = generateDropDown(SearchBox.prototype.bldArray, 
+            SearchBox.prototype.bldArrayNames["name"], 
+            SearchBox.prototype.bldArrayNames["id"], 
+            "sbdc00", "Buildings");
+    SearchBox.prototype.dpmtID = generateDropDown(this.dpmtArray, 
+            SearchBox.prototype.dpmtArrayNames["name"], 
+            SearchBox.prototype.dpmtArrayNames["id"], 
+            "sbdc01", "Departments");
+    SearchBox.prototype.srvID = generateDropDown(this.srvArray, 
+            SearchBox.prototype.srvArrayNames["name"], 
+            SearchBox.prototype.srvArrayNames["id"], 
+            "sbdc10", "Services");
+    SearchBox.prototype.beginTimeID = generateTimepicker("sbdc20", "Begin Time", 
+            SearchBox.prototype.timepickerLength);
+    SearchBox.prototype.endTimeID = generateTimepicker("sbdc21", "End Time", 
+            SearchBox.prototype.timepickerLength);
     SearchBox.prototype.submitID = generateSubmitButton("sbdc30", "Sumbit Query");
 
 //    SearchBox.prototype.submitNode = generateSubmitButton("sbdc30", "Sumbit Query", SearchBox.prototype.bldddID);
@@ -106,8 +137,12 @@ function generateTimepicker(parentID, myName, size){
     //parent.appendChild(document.createElement("br"));
     parent.appendChild(curNode);
  
-    AnyTime.picker( myID, {format: "%Y-%m-%d %H:%i:%s %E %#", formatUtcOffset: "%: (%@)", firstDOW: 1} );
-        
+    AnyTime.picker( myID, {format: "%Y/%m/%d %H:%i:%s %#", 
+                            formatUtcOffset: "%: (%@)", 
+                            baseYear: 2000,
+                            earliest: new Date(2010,0,1,0,0,0),
+                            latest: new Date(2019,11,31,23,59,59)} );
+
     return myID;
 }
 
@@ -147,13 +182,59 @@ function validateAux(){
     txt +=  "Selected Begin Time: " + btm + "; ";
     txt +=  "Selected BEnd Time: " + etm + ". ";
     
-    if (btm==null || btm==SearchBox.prototype.invalidTime){
-          alert(txt);
+//    if (btm==null || btm==SearchBox.prototype.invalidTime){
+//          alert(txt);
+//    }
+
+    if ( (bld==null || bld==SearchBox.prototype.invalidID)
+            && (dpmt==null || dpmt==SearchBox.prototype.invalidID)
+            && (srv==null || srv==SearchBox.prototype.invalidID) ){
+        alert("Oops!  \nPlease choose a Building, Department or Service.");
+        return;
+    }
+    
+    if ( (btm==null || btm==SearchBox.prototype.invalidTime) ){
+        alert("Oops!  \nPlease choose a Begin Time and End Time.");
+        return;           
     }
 
+    var url = SearchBox.prototype.url;
+    url += "?bld=" + bld + ";";
+    url += "dpmt=" + dpmt + ";";
+    url += "srv=" + srv + ";";
+    url += "btm=" + strToUnixTime(btm) + ";";
+    url += "etm=" + strToUnixTime(etm) + ";";
+    
+    window.location = url;
 }
 
 
 function end(){
     
+}
+
+// string format: "%Y/%m/%d %H:%i:%s %(timezone offset in minutes)"
+// ie. 2011/12/21 22:01:10 -360
+function strToUnixTime(str){
+    if (str==null || str==SearchBox.prototype.invalidTime) return SearchBox.prototype.invalidUnixtime;
+    
+    var year = parseInt( str.substring(0, 4) );
+    var month = parseInt( str.substring(5, 7) );
+    var date = parseInt( str.substring(8, 10) );
+    var hours = parseInt( str.substring(11, 12) )*10 + parseInt( str.substring(12, 13) );
+    var minutes = parseInt( str.substring(14, 15) )*10 + parseInt( str.substring(15, 16) )
+    var seconds = parseInt( str.substring(17, 18) )*10 + parseInt( str.substring(18, 19) );
+    var offset = (parseInt( str.substring(20) )); // (UTC-current), timezone offset in minutes 
+    
+    var d = new Date();
+
+    d.setFullYear(year, month-1, date);
+    d.setHours(hours, minutes, seconds, 0);
+    offset = (-d.getTimezoneOffset() - offset)*60; 
+    var unixtime = d.getTime()/1000 + offset;
+
+    return unixtime;
+//    return d.getUTCFullYear() + "/" + (d.getUTCMonth()+1) + "/" + d.getUTCDate() + " " 
+//        + d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds() + " " + offset;
+
 }

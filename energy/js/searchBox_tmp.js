@@ -135,7 +135,7 @@ function generateTimepicker(parentID, myName, size){
     //parent.appendChild(document.createElement("br"));
     parent.appendChild(curNode);
  
-    AnyTime.picker( myID, {format: "%Y-%m-%d %H:%i:%s %E %#", formatUtcOffset: "%: (%@)", firstDOW: 1} );
+    AnyTime.picker( myID, {format: "%Y/%m/%d %H:%i:%s %E %#", formatUtcOffset: "%: (%@)", firstDOW: 1} );
         
     return myID;
 }
