@@ -1,0 +1,86 @@
+/* 
+    Document   : dataSummary
+    Created on : Dec 6, 2011, 3:47:37 PM
+    Author     : ordinary people
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.dataSummary {
+    height: 300px;
+    width: 940px;
+    border: #CCC 3px solid;
+    margin-bottom:10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    font-family: arial;
+}
+
+.dataSummaryCell1 {
+    height: 280px;
+    width: 300px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom:10px;
+    border-right: #CCC 2px solid;
+    text-align:center;
+}
+	
+.dataSummaryCell2 {
+    height: 280px;
+    width: 300px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 10px;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+
+.basicInfoBox {
+    height: 255px;
+    width: 270px;
+    background-color: #C6EF8C;
+    border: #000 1px solid;
+    margin:10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;  
+}
+
+.basicInfoBox .name{
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 0;
+    padding-bottom: 0;
+
+
+}
+
+.basicInfoBox .address{
+    font-size: 12px;
+    font-weight: 400;
+    margin: 5px;
+    padding: 5px;
+    margin-bottom: 80px;
+}
+
+.basicInfoBox .time{
+    font-size: 15px;
+    font-weight: 400;
+    margin: 2px;
+    padding: 2px;
+}
+
+.dataSummary .ds_title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 5px;
+    padding: 5px;
+}
+

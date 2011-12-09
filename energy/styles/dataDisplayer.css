@@ -1,0 +1,35 @@
+/* 
+    Document   : dataSummary
+    Created on : Dec 6, 2011, 3:47:37 PM
+    Author     : ordinary people
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.dataDisplayContainer {
+        width:950px;
+        text-align:center;
+}
+
+.graphContainer {
+    width:900px;
+    height:350px;
+    text-align:left;
+/*    border: #000 1px solid;*/
+}
+
+.flotGraph {
+    width:750px;
+    height:300px;
+    float:left;
+    margin:20px;
+}
+
+.flotGraphChoices {
+    padding-top: 50px;
+}
