@@ -185,6 +185,7 @@ function generateTmpNote(prefix, ftmp){
 }
 
 function generateTmpChart(dataSet){
+    if (dataSet==null) return DataSummary.prototype.NOT_FOUND_FUN2;
     var url = DataSummary.prototype.TMP_CHART;
     for(var j=0; j<dataSet.length-1; j++){
         url += dataSet[j] + ",";
@@ -198,6 +199,7 @@ function generateElctNote(prefix, amount, unit){
 }
 
 function generateElectPie(dataPairs){
+    if (dataPairs==null) return DataSummary.prototype.NOT_FOUND_FUN2;
     var url = DataSummary.prototype.ELECT_PIE;
     var data ="";
     var label = "";

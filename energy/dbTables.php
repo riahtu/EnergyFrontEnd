@@ -34,6 +34,10 @@ define("DM_ATTRIBUTE_TABLE", "table_name");
 define("DATA_ATTRIBUTE_BEGIN_TIME", "begin_time");
 define("DATA_ATTRIBUTE_AMOUNT", "amount");
 
+// data types
+define("DATA_TYPE_ELCT", "elct");
+define("DATA_TYPE_TMP", "tmp");
+
 
 // relation table/attributes
 define("OBJECT_RELATIONS", "relations");

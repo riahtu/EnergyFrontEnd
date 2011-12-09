@@ -99,7 +99,7 @@ class DBConn{
     // if $id is null, returns all rows.
     public function getObjectInfo($type, $attributes, $id){
         if ($type===null||$attributes===null){
-            die("DBConn::getObjectInfo() - invalid parameter");
+            die("DBConn::getObjectInfo() - invalid parameter.");
         }
         
         $table = '';
@@ -108,7 +108,7 @@ class DBConn{
             case OBJECT_TYPE_DPM: $table=OBJECT_TABLE_DPMTS; break;
             case OBJECT_TYPE_SRV: $table=OBJECT_TABLE_SRVS; break;
             case OBJECT_TYPE_SNS: $table=OBJECT_TABLE_SNS; break;
-            default: die("DBConn::getObjectInfo() - invalid object type.");
+            default: die("DBConn::getObjectInfo() - invalid object type: : $type");
         }
         
         $attributestring = " ";

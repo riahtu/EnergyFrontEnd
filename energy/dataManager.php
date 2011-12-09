@@ -12,53 +12,119 @@ class DataManager{
  
     
     // methods
-    static private function generateJSDataDisplayArrays($myObjectData){
-        // generate "basicInfoArray"
-        $str = DISPLAY_BASIC_INFO_ARRAY . "={" . "\"name\":\"" .$myObjectData->myName . "\"," .
-                    "\"address\":\"" . $myObjectData->myAddress . "\"," .
-                    "\"begin_time\":" . $myObjectData->beginTime . "," .
-                    "\"end_time\":" . $myObjectData->endTime . "}";
-        
-        // generate "electInfoArray"
-//        $str += DISPLAY_ELECT_INFO_ARRAY . "={" . "\"sum\":" . 
 
-//define("DISPLAY_ELECT_INFO_ARRAY", "electInfoArray");
-////ie.
-////electInfoArray = {
-////    "sum" : 195432,
-////    "avg" : 15432,
-////    "unit" : "Kilowatt",
-////    "dataPairSet" : Array(
-////        {
-////            "name" : "rack+1",
-////            "amount": 60
-////        },
-////
-////        {
-////            "name" : "rack+2",
-////            "amount": 60
-////        },
-////        
-////        {
-////            "name" : "rack+3",
-////            "amount" : 100
-////        }
-////    )
-////
-////}                   
-                
-        // generate "tmpInfoArray"
-        
-        // generate "edatasets"
-        
-        // generate "tdatasets"
-        echo $str;
+    private function generateDataSets($datasetName, $ids){
+        // generate "datasets"
+        $str = "";
+        // add codes here
+//        foreach($ids as $id){
+//            
+//            $pairStr = "";
+//            $curObjtDt = new ObjectData($objtType, $id, $bTime, $eTime, $this->_db); 
+//            foreach ($curObjtDt->myDataSets as $curDtSt){
+//                if($curDtSt->dataType===$dtType){
+//                    $pairStr .= "{\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET_NAME . "\":\"" . self::strSpcToPlus($curObjtDt->myName) . "\"," .
+//                                "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET_AMT . "\":" . $curDtSt->dataStats[DATA_STAT_SUM] . "},";
+//                    break; // found target data type. 
+//                }
+//            }
+//            $str .= $pairStr;
+//        }
+//        if ($str!=="") return "Array(" . substr($str, 0, strlen($str)-1) . ")";
+//        else return "null";
     }
+
+        
+
+    
+    private function generateJSTmpInfoArrayAux($dataPairs){
+        $str = "";
+        foreach($dataPairs as $dataPair){
+            $str .= $dataPair[DATA_ATTRIBUTE_AMOUNT] . ",";
+        }
+        if ($str!=="") return "Array(" . substr($str, 0, strlen($str)-1) . ")";
+        else return "null";
+    }
+
+    private function generateJSTmpInfoArray($myObjectData){
+        // generate "tmpInfoArray"
+        $str = "";
+        $datatype = DATA_TYPE_TMP;
+        foreach($myObjectData->myDataSets as $dataSet){
+            if ($dataSet->dataType === $datatype){
+                $str .= DISPLAY_TMP_INFO_ARRAY . "={" . 
+                        "\"" . DISPLAY_TMP_INFO_ARRAY_KEY_MAX . "\":" . $dataSet->dataStats[DATA_STAT_MAX] . "," .
+                        "\"" . DISPLAY_TMP_INFO_ARRAY_KEY_MIN . "\":" . $dataSet->dataStats[DATA_STAT_MIN] . "," .
+                        "\"" . DISPLAY_TMP_INFO_ARRAY_KEY_DSET . "\":" . $this->generateJSTmpInfoArrayAux($dataSet->dataPairs) . "}";
+                break;  // found target data type.                          
+            }
+        }
+        if ($str!=="") return $str;
+        else return DISPLAY_TMP_INFO_ARRAY . "=null";
+    }
+    
+    
+    static private function strSpcToPlus($str){
+        return str_replace(" ", "+", $str);
+    }
+    
+    private function generateJSNmAmtPairs($ids, $objtType, $bTime, $eTime, $dtType){
+        $str = "";
+        foreach($ids as $id){
+            $pairStr = "";
+            $curObjtDt = new ObjectData($objtType, $id, $bTime, $eTime, $this->_db); 
+            foreach ($curObjtDt->myDataSets as $curDtSt){
+                if($curDtSt->dataType===$dtType){
+                    $pairStr .= "{\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET_NAME . "\":\"" . self::strSpcToPlus($curObjtDt->myName) . "\"," .
+                                "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET_AMT . "\":" . $curDtSt->dataStats[DATA_STAT_SUM] . "},";
+                    break; // found target data type. 
+                }
+            }
+            $str .= $pairStr;
+        }
+        if ($str!=="") return "Array(" . substr($str, 0, strlen($str)-1) . ")";
+        else return "null";
+    }
+ 
+
+    private function generateJSElctInfoArray($myObjectData, $bTime, $eTime){
+        // generate "electInfoArray"
+        $str = "";
+        $datatype = DATA_TYPE_ELCT;
+        foreach($myObjectData->myDataSets as $dataSet){
+            if ($dataSet->dataType === $datatype){
+                $str .= DISPLAY_ELECT_INFO_ARRAY . "={" . 
+                        "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_SUM . "\":" . $dataSet->dataStats[DATA_STAT_SUM] . "," .
+                        "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_AVG . "\":" . $dataSet->dataStats[DATA_STAT_AVG] . "," .
+                        "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_UNIT . "\":\"" . $dataSet->dataUnit ."\"," .
+                        "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET . "\":" . $this->generateJSNmAmtPairs($myObjectData->myChildrenIds, 
+                                        $myObjectData->myChildrenType, $bTime, $eTime, $datatype) . "}";
+                break;  // found target data type.                          
+            }
+        }
+        if ($str!=="") return $str;
+        else return DISPLAY_ELECT_INFO_ARRAY . "=null";
+    }
+                           
+
+    private function generateJSDBasicInfoArray($myObjectData){
+        // generate "basicInfoArray"
+        $str = DISPLAY_BASIC_INFO_ARRAY . "={" . 
+                    "\"" . DISPLAY_BASIC_INFO_ARRAY_KEY_NAME . "\":\"" .$myObjectData->myName . "\"," .
+                    "\"" . DISPLAY_BASIC_INFO_ARRAY_KEY_ADDRESS . "\":\"" . $myObjectData->myAddress . "\"," .
+                    "\"" . DISPLAY_BASIC_INFO_ARRAY_KEY_BTIME . "\":" . $myObjectData->beginTime . "," .
+                    "\"" . DISPLAY_BASIC_INFO_ARRAY_KEY_ETIME . "\":" . $myObjectData->endTime . "}";
+
+        return $str;
+    }  
+    
     
     public function showData(){
         $ids = $this->validateUserSelctions();
         $myObjectData = new ObjectData($ids['type'], $ids['id'], $ids['btm'], $ids['etm'], $this->_db);
-        self::generateJSDataDisplayArrays($myObjectData);
+        echo $this->generateJSDBasicInfoArray($myObjectData) . "<br />";
+        echo $this->generateJSElctInfoArray($myObjectData, $ids['btm'], $ids['etm']) . "<br />";
+        echo $this->generateJSTmpInfoArray($myObjectData) . "<br />";
     }
     
     private function validateUserSelctions(){

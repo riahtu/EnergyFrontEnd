@@ -8,7 +8,7 @@ Class DataSet{
     public $dataDuration;
     public $dataUnit;
     public $dataPairs;
-    public $dataStats; // sum, ave, max, min.
+    public $dataStats; // array, keys: sum, ave, max, min.
 }
 
 Class ObjectData{
