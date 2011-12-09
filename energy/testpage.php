@@ -8,13 +8,11 @@ and open the template in the editor.
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <?php
-            include("styles.php");
-            include("scripts.php");
-            include("inputs.php");
+            require_once("include.php");
         ?>
     </head>
     <body>
-        <div id="searchBox" class="searchBox_full">
+        <div id="searchBox" class="searchBox"></div>
 <!-- test searchBox.js begin-->
 <!--        
         <script> 
@@ -27,7 +25,7 @@ and open the template in the editor.
 <!--test searchBox.js end -->
 
     <?php 
-    require_once 'dataManager.php';
+
     $manager = new DataManager();
     $manager->createSearchBox("searchBox", "sBox");
     ?>

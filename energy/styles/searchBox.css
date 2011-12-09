@@ -12,7 +12,7 @@
 */
 
 
-#searchBox {
+.searchBox {
     height: 320px;
     width: 780px;
     border: #CCC 3px solid;
@@ -23,7 +23,7 @@
 }
 
 /* #searchBox a {color:#0092dd;} */
-#searchBox p {
+.searchBox p {
      font-family:Arial, Helvetica, Sans-Serif;  
      color:#6b6b6b; 
      font-size:18px;

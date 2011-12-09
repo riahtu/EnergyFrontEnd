@@ -10,27 +10,27 @@ function SearchBox(bldArray, dpmtArray, srvArray){
     SearchBox.prototype.invalidUnixtime = -1;
     SearchBox.prototype.url = "./results.php";
     SearchBox.prototype.bldArrayNames = {
-        "name": "bld_name",
-        "id": "bld_id",
+        "name": "name",
+        "id": "id",
         "begin": "begin_time",
         "end": "emd_time"
     };
     SearchBox.prototype.dpmtArrayNames = {
-        "name": "dpmt_name",
-        "id": "dpmt_id",
+        "name": "name",
+        "id": "id",
         "begin": "begin_time",
         "end": "emd_time"
     };
     SearchBox.prototype.srvArrayNames = {
-        "name": "srv_name",
-        "id": "srv_id",
+        "name": "name",
+        "id": "id",
         "begin": "begin_time",
         "end": "emd_time"
     };
 
-    SearchBox.prototype.bldArray = bldArray  // format: (id | name | beginTime | endTime)
-    SearchBox.prototype.dpmtArray = dpmtArray  // format: (id | name | beginTime | endTime)
-    SearchBox.prototype.srvArray = srvArray  // format: (bldID | dpmtID | srvID | name | beginTime | endTime)
+    SearchBox.prototype.bldArray = bldArray  // format: (id | name)
+    SearchBox.prototype.dpmtArray = dpmtArray  // format: (id | name)
+    SearchBox.prototype.srvArray = srvArray  // format: (id | name)
 							
     SearchBox.prototype.bldID = null
     SearchBox.prototype.dpmtID = null
@@ -53,6 +53,10 @@ function SearchBox(bldArray, dpmtArray, srvArray){
 
 function draw(searchDiv){
     var root = document.getElementById(searchDiv);
+    if (root.getAttribute("class")!=null){
+        root.removeAttribute("class");
+    }
+    root.setAttribute("class", "searchBox");
     var curNode, childNode;
 
     for (var j=0; j<4; j++){
@@ -199,11 +203,11 @@ function validateAux(){
     }
 
     var url = SearchBox.prototype.url;
-    url += "?bld=" + bld + ";";
-    url += "dpmt=" + dpmt + ";";
-    url += "srv=" + srv + ";";
-    url += "btm=" + strToUnixTime(btm) + ";";
-    url += "etm=" + strToUnixTime(etm) + ";";
+    url += "?bld=" + bld + "&";
+    url += "dpmt=" + dpmt + "&";
+    url += "srv=" + srv + "&";
+    url += "btm=" + strToUnixTime(btm) + "&";
+    url += "etm=" + strToUnixTime(etm);
     
     window.location = url;
 }
