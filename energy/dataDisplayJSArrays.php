@@ -60,6 +60,7 @@ define("DISPLAY_TMP_INFO_ARRAY_KEY_DSET", "dataSet");
 // these two keys are the same for edatasets and tdatasets
 define("DISPLAY_DATA_SETS_KEY_LABEL", "label"); 
 define("DISPLAY_DATA_SETS_KEY_DATA", "data");
+define("DISPLAY_DATA_SETS_TIME_MULTIPLIER", "000"); // data fetched from db is string.
 
 define("DISPLAY_ELECT_DATA_SETS", "edatasets");
 //ie.

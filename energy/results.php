@@ -12,17 +12,18 @@ and open the template in the editor.
         ?>
     </head>
     <body>
+        <div id="dp1"></div>
         <?php
 //            echo "this is the result page. =]\n";
 //        
             require_once 'dataManager.php';
             $manager = new DataManager();
-            $manager->showData();
+            $manager->showData("dp1");
         ?>
 <!--        <div id="summary1"></div>
         <div id="graph1"></div>-->
 
-        <div id="dp1"></div>
+
 
         <script> 
 

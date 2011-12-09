@@ -4,34 +4,53 @@ require_once 'dbConn.php';
 require_once 'dbTables.php';
 require_once 'objectData.php';
 
+
+
 class DataManager{
     
     // properties
     private $_db;
+    static private $_isDisplayPrefix = "displayer";
+    static private $_jsDisplayCount = 0;
 
  
     
     // methods
-
-    private function generateDataSets($datasetName, $ids){
-        // generate "datasets"
+    private function generateDataSetsAux($dataPairs){
         $str = "";
-        // add codes here
-//        foreach($ids as $id){
-//            
-//            $pairStr = "";
-//            $curObjtDt = new ObjectData($objtType, $id, $bTime, $eTime, $this->_db); 
-//            foreach ($curObjtDt->myDataSets as $curDtSt){
-//                if($curDtSt->dataType===$dtType){
-//                    $pairStr .= "{\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET_NAME . "\":\"" . self::strSpcToPlus($curObjtDt->myName) . "\"," .
-//                                "\"" . DISPLAY_ELECT_INFO_ARRAY_KEY_DPSET_AMT . "\":" . $curDtSt->dataStats[DATA_STAT_SUM] . "},";
-//                    break; // found target data type. 
-//                }
-//            }
-//            $str .= $pairStr;
-//        }
-//        if ($str!=="") return "Array(" . substr($str, 0, strlen($str)-1) . ")";
-//        else return "null";
+        foreach($dataPairs as $dataPair){
+            $str .= "[" . $dataPair[DATA_ATTRIBUTE_BEGIN_TIME] . DISPLAY_DATA_SETS_TIME_MULTIPLIER . "," . 
+                    $dataPair[DATA_ATTRIBUTE_AMOUNT] . "],";
+        }
+        if ($str!=="") return "[" . substr($str, 0, strlen($str)-1) . "]";
+        else return "null";        
+    }
+
+    private function generateDataSets($datasetName, $dtType, $myObjectData){
+        // generate "datasets"
+        $ids = $myObjectData->myChildrenIds;
+        $objType = $myObjectData->myChildrenType;
+        $btime = $myObjectData->beginTime;
+        $etime = $myObjectData->endTime;
+        $str = "";
+        foreach($ids as $id){
+            $objctDtStr = "";
+            $curObjDt = new ObjectData($objType, $id, $btime, $etime, $this->_db);
+            foreach ($curObjDt->myDataSets as $curDtSt){
+                if ($curDtSt->dataType===$dtType){
+                    $curDataPairs = $this->generateDataSetsAux($curDtSt->dataPairs);
+                    if ($curDataPairs !== "null"){
+                        $objctDtStr .= "\"" . $curObjDt->myName . "\":{" .
+                                DISPLAY_DATA_SETS_KEY_LABEL . ":\"" . $curObjDt->myName . "\"," .
+                                DISPLAY_DATA_SETS_KEY_DATA . ":" . $curDataPairs . "},";                        
+                    }
+                    break;
+                }
+            }
+            $str .= $objctDtStr;
+        }
+        if ($str!=="") return $datasetName . "={" . substr($str, 0, strlen($str)-1) . "}";
+        else return $datasetName . "=null";
     }
 
         
@@ -87,8 +106,10 @@ class DataManager{
     }
  
 
-    private function generateJSElctInfoArray($myObjectData, $bTime, $eTime){
+    private function generateJSElctInfoArray($myObjectData){
         // generate "electInfoArray"
+        $bTime = $myObjectData->beginTime;
+        $eTime = $myObjectData->endTime;
         $str = "";
         $datatype = DATA_TYPE_ELCT;
         foreach($myObjectData->myDataSets as $dataSet){
@@ -119,12 +140,25 @@ class DataManager{
     }  
     
     
-    public function showData(){
+    public function showData($parentDiv){
         $ids = $this->validateUserSelctions();
         $myObjectData = new ObjectData($ids['type'], $ids['id'], $ids['btm'], $ids['etm'], $this->_db);
-        echo $this->generateJSDBasicInfoArray($myObjectData) . "<br />";
-        echo $this->generateJSElctInfoArray($myObjectData, $ids['btm'], $ids['etm']) . "<br />";
-        echo $this->generateJSTmpInfoArray($myObjectData) . "<br />";
+        echo "<script>";
+        echo $this->generateJSDBasicInfoArray($myObjectData) . "; ";
+        echo $this->generateJSElctInfoArray($myObjectData) . "; ";
+        echo $this->generateJSTmpInfoArray($myObjectData) . "; ";
+        echo $this->generateDataSets(DISPLAY_ELECT_DATA_SETS, DATA_TYPE_ELCT, $myObjectData) . "; ";
+        echo $this->generateDataSets(DISPLAY_TMP_DATA_SETS, DATA_TYPE_TMP, $myObjectData) . "; ";
+        $jsId = self::$_isDisplayPrefix . self::$_jsDisplayCount;
+        self::$_jsDisplayCount = self::$_jsDisplayCount+1;
+        echo "var " . $jsId . "=new DataDisplayer(" . 
+                DISPLAY_BASIC_INFO_ARRAY . "," .
+                DISPLAY_ELECT_INFO_ARRAY . "," .
+                DISPLAY_TMP_INFO_ARRAY . "," .
+                DISPLAY_ELECT_DATA_SETS . "," .
+                DISPLAY_TMP_DATA_SETS . "); ";
+        echo $jsId . ".carryOut(\"" . $parentDiv . "\"); ";
+        echo "</script>";
     }
     
     private function validateUserSelctions(){
