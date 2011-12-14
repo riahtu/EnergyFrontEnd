@@ -1,6 +1,6 @@
 <?php
 
-require_once ("/parts/include.php");
+require_once ("parts/include.php");
 
 class DBConn{
 

@@ -8,7 +8,7 @@ and open the template in the editor.
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <?php
-            require_once("/parts/include.php"); 
+            require_once("parts/include.php"); 
         ?>
     </head>
     <body>

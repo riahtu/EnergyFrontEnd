@@ -3,8 +3,8 @@
 
 <head>
 <?php
-require_once("/parts/header.php");
-require_once("/parts/include.php"); 
+require_once("parts/header.php");
+require_once("parts/include.php"); 
 ?>
 </head>
 
@@ -28,7 +28,7 @@ require_once("/parts/include.php");
 </div> <!-- end title -->
 
 <div id="nav_container">
-<?php require_once ("/parts/navigation.php"); ?>
+<?php require_once ("parts/navigation.php"); ?>
 <hr />
 </div> <!-- end nav_container -->
 
@@ -46,7 +46,7 @@ $manager->createSearchBox("goSearch", "sBox");
 <hr />
 </div> <!-- end container_12 -->
 
-<?php require_once ("/parts/footer.php"); ?>
+<?php require_once ("parts/footer.php"); ?>
 
 </body>
 </html>

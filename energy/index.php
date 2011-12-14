@@ -3,7 +3,7 @@
 
 <head>
 <?php
-require_once("/parts/header.php");
+require_once("parts/header.php");
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="./styles/reset.css" />
 <link rel="stylesheet" type="text/css" media="all" href="./styles/text.css" />
@@ -40,7 +40,7 @@ require_once("/parts/header.php");
 
 <div class="transbox" id="nav_container">
     
-<?php require_once ("/parts/navigation.php"); ?>
+<?php require_once ("parts/navigation.php"); ?>
 
 </div> <!-- end nav_container -->
 
@@ -55,7 +55,7 @@ require_once("/parts/header.php");
 
 </div> <!-- end container_12 -->
 
-<?php require_once ("/parts/footer.php"); ?>
+<?php require_once ("parts/footer.php"); ?>
 
 </body>
 </html>
