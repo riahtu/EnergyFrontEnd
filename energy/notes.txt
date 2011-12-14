@@ -1,3 +1,0 @@
-Energy Front End Project Notes
-
-* use pear naming convention for the PHP coding: http://pear.php.net/manual/en/standards.naming.php
