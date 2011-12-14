@@ -14,8 +14,8 @@ class DataManager{
     private function generateDataSetsAux($dataPairs){
         $str = "";
         foreach($dataPairs as $dataPair){
-            $str .= "[" . $dataPair[DATA_ATTRIBUTE_BEGIN_TIME] . DISPLAY_DATA_SETS_TIME_MULTIPLIER . "," . 
-                    $dataPair[DATA_ATTRIBUTE_AMOUNT] . "],";
+            $str .= "[" . $dataPair[DATA_ATTRIBUTE_TIME] . DISPLAY_DATA_SETS_TIME_MULTIPLIER . "," . 
+                    $dataPair[DATA_ATTRIBUTE_VALUE] . "],";
         }
         if ($str!=="") return "[" . substr($str, 0, strlen($str)-1) . "]";
         else return "null";        
@@ -54,7 +54,7 @@ class DataManager{
     private function generateJSTmpInfoArrayAux($dataPairs){
         $str = "";
         foreach($dataPairs as $dataPair){
-            $str .= $dataPair[DATA_ATTRIBUTE_AMOUNT] . ",";
+            $str .= $dataPair[DATA_ATTRIBUTE_VALUE] . ",";
         }
         if ($str!=="") return "Array(" . substr($str, 0, strlen($str)-1) . ")";
         else return "null";

@@ -8,5 +8,5 @@
 define("DB_SERVER", "localhost");
 define("DB_USER", "tang");
 define("DB_PASSWORD", "tang");
-define("DB_DATABASE", "energy");
+define("DB_DATABASE", "energy_sim");
 ?>

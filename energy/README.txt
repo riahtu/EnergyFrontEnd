@@ -1,16 +1,19 @@
-UW Energy Front End v1.0
+UW Energy Front End v1.1
 Author: Xin Tang (xtang@cs.wisc.edu)
+2011/12/14
 
 README
 
 1. Project Description
 This project is the front end of the UW-Madison Energy Monitoring System. 
-It use website format to displays energy consumption related data such 
-electricity usage and room temperature which we collect on UW campus.
+It uses website format to displays energy consumption related data such 
+electricity usage and room temperature which our research group collect 
+on UW campus.
 
-2. Version
-v1.0
-In this version we implement an interface for user to look up electricity 
+2. Versions
+v1.1 - Optimized db tables (see 3.b) and updated db interface.
+
+v1.0 - In this version we implemented an interface for user to look up electricity 
 usages and room temperature in buildings, departments or services.
 Besides the data line chart, simple statistics such as sum, avg, max 
 and min are provided.
@@ -24,83 +27,78 @@ a) required packages
 b) Database setup
 We need to set up the following tables in MySQL for the webpages to fetch data.
 
-CREATE TABLE buildings(
-id int not null,
-name varchar(30) not null,
-address varchar(30) not null,
-primary key(id)
-);
-
-CREATE TABLE departments(
-id int not null,
-name varchar(30) not null,
-address varchar(30) not null,
-primary key(id)
-);
-
-CREATE TABLE services(
-id int not null,
-name varchar(30) not null,
-address varchar(30) not null,
-primary key(id)
-);
-
-CREATE TABLE sensors(
-id int not null,
-name varchar(30) not null,
-address varchar(30) not null,
-data_unit varchar(15) not null,
-data_type varchar(4) not null,
-primary key(id)
-);
-
-CREATE TABLE relations(
-parent_id int not null,
-child_id int not null,
-primary key(parent_id, child_id)
-);
+ CREATE TABLE `raw_data` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` int(11) NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
+ CREATE TABLE `aggr_data_1min` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` int(11) NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
 
-CREATE table raw_data(
-id int not null,
-time int not null,
-value int not null,
-primary key(id, time)
-);
+ CREATE TABLE `aggr_data_1hour` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` int(11) NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
+
+ CREATE TABLE `aggr_data_1day` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` int(11) NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+ CREATE TABLE `buildings` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+ CREATE TABLE `departments` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
+
+ CREATE TABLE `services` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 
+
+ CREATE TABLE `sensors` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   `data_unit` varchar(15) NOT NULL,
+   `data_type` varchar(4) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
-CREATE table aggr_data_1min(
-id int not null,
-time int not null,
-value int not null,
-primary key(id, time)
-);
+ CREATE TABLE `relations` (
+   `parent_id` int(11) NOT NULL,
+   `child_id` int(11) NOT NULL,
+   PRIMARY KEY (`parent_id`,`child_id`),
+   KEY `parent_id` (`parent_id`),
+   KEY `child_id` (`child_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
-CREATE table aggr_data_1hour(
-id int not null,
-time int not null,
-value int not null,
-primary key(id, time)
-);
-
-
-
-CREATE table aggr_data_1day(
-id int not null,
-time int not null,
-value int not null,
-primary key(id, time)
-);
-
-* table relations describe relations between buildings, departments, services 
-and sensors.
-* table data_master describe relationship between the object and the data.
 
 c) Data Update
-we need to setup some daemons to update corresponding services, 
-departments, and buildings once we get new sensor data. This code is not
-included in this project.
+we need to setup some daemons or cron jobs to update all the data tables. 
+These codes are not included in this project.
 
 d) Database Login Info
 Edit /php/dbLogin to provide db log in information.
