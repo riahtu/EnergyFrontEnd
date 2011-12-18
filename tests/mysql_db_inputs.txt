@@ -1,0 +1,225 @@
+mysql_db_inputs.txt
+Xin Tang (xtang@cs.wisc.edu)
+
+
+This file is used to generate the db tables and some dummy data for testing.
+
+--
+-- MySQL 5.5.16
+--
+
+A. create tables:
+
+ CREATE TABLE `raw_data` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` double NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `aggr_data_1min` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` double NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `aggr_data_1hour` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` double NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `aggr_data_1day` (
+   `id` int(11) NOT NULL,
+   `time` int(11) NOT NULL,
+   `value` double NOT NULL,
+   PRIMARY KEY (`id`,`time`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `buildings` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `departments` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ CREATE TABLE `services` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+
+ CREATE TABLE `sensors` (
+   `id` int(11) NOT NULL,
+   `name` varchar(40) NOT NULL,
+   `address` varchar(40) NOT NULL,
+   `data_unit` varchar(15) NOT NULL,
+   `data_type` varchar(4) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+ CREATE TABLE `relations` (
+   `parent_id` int(11) NOT NULL,
+   `child_id` int(11) NOT NULL,
+   PRIMARY KEY (`parent_id`,`child_id`),
+   KEY `parent_id` (`parent_id`),
+   KEY `child_id` (`child_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+B. insert rows into the the tables
+
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50000', '1314835200', '10300');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50000', '1317427200', '12300');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50000', '1320105600', '12100');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50000', '1322781000', '12340');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50001', '1314835200', '19300');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50001', '1317427200', '12760');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50001', '1320105600', '12500');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50001', '1322781000', '12440');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50002', '1314835200', '10300');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50002', '1317427200', '12800');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50002', '1320105600', '10100');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50002', '1322781000', '12940');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50003', '1314835200', '19300');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50003', '1317427200', '12380');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50003', '1320105600', '10100');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50003', '1322781000', '12120');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50004', '1314835200', '66');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50004', '1317427200', '72');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50004', '1320105600', '54');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50004', '1322781000', '73');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50005', '1314835200', '80');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50005', '1317427200', '76');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50005', '1320105600', '60');
+INSERT INTO `aggr_data_1day` (`id`, `time`, `value`) VALUES ('50005', '1322781000', '82');
+
+
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50000', '1314835200', '1800');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50000', '1317427200', '2300');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50000', '1320105600', '2000');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50000', '1322781000', '2340');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50001', '1314835200', '3600');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50001', '1317427200', '2760');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50001', '1320105600', '2200');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50001', '1322781000', '2440');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50002', '1314835200', '1400');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50002', '1317427200', '2800');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50002', '1320105600', '2000');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50002', '1322781000', '2940');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50003', '1314835200', '1900');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50003', '1317427200', '2380');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50003', '1320105600', '2900');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50003', '1322781000', '2120');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50004', '1314835200', '70');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50004', '1317427200', '73');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50004', '1320105600', '50');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50004', '1322781000', '71');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50005', '1314835200', '90');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50005', '1317427200', '76');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50005', '1320105600', '50');
+INSERT INTO `aggr_data_1hour` (`id`, `time`, `value`) VALUES ('50005', '1322781000', '72');
+
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50000', '1314835200', '400');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50000', '1317427200', '300');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50000', '1320105600', '200');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50000', '1322781000', '340');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50001', '1314835200', '400');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50001', '1317427200', '760');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50001', '1320105600', '500');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50001', '1322781000', '440');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50002', '1314835200', '600');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50002', '1317427200', '800');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50002', '1320105600', '600');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50002', '1322781000', '940');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50003', '1314835200', '400');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50003', '1317427200', '380');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50003', '1320105600', '200');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50003', '1322781000', '120');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50004', '1314835200', '70');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50004', '1317427200', '72');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50004', '1320105600', '90');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50004', '1322781000', '74');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50005', '1314835200', '60');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50005', '1317427200', '70');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50005', '1320105600', '80');
+INSERT INTO `aggr_data_1min` (`id`, `time`, `value`) VALUES ('50005', '1322781000', '76');
+
+
+INSERT INTO `buildings` (`id`, `name`, `address`) VALUES ('0', 'Computer Sciences And Statistics', '1210 W. Dayton St.');
+INSERT INTO `buildings` (`id`, `name`, `address`) VALUES ('1', 'Wisconsin Institutes For Discovery', '330 N. Orchard');
+INSERT INTO `buildings` (`id`, `name`, `address`) VALUES ('2', 'Wendt Commons', '215 N. Randall Ave.');
+
+
+INSERT INTO `departments` (`id`, `name`, `address`) VALUES ('10000', 'Computer Sciences Department', '1210 W. Dayton St.');
+INSERT INTO `departments` (`id`, `name`, `address`) VALUES ('10001', 'Division of Information Technology', '1210 W. Dayton St.');
+INSERT INTO `departments` (`id`, `name`, `address`) VALUES ('10002', 'Wisconsin Institutes for Discovery', '330 N. Orchard');
+INSERT INTO `departments` (`id`, `name`, `address`) VALUES ('10003', 'Wendt Commons Library', '215 N. Randall Ave.');
+
+
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50000', '1317427200', '300');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50000', '1314835200', '400');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50000', '1317427200', '300');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50000', '1320105600', '200');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50000', '1322781000', '340');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50001', '1314835200', '400');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50001', '1317427200', '760');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50001', '1320105600', '500');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50001', '1322781000', '440');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50002', '1314835200', '600');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50002', '1317427200', '800');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50002', '1320105600', '600');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50002', '1322781000', '940');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50003', '1314835200', '400');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50003', '1317427200', '380');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50003', '1320105600', '200');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50003', '1322781000', '120');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50004', '1314835200', '70');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50004', '1317427200', '72');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50004', '1320105600', '90');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50004', '1322781000', '74');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50005', '1314835200', '60');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50005', '1317427200', '70');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50005', '1320105600', '80');
+INSERT INTO `raw_data` (`id`, `time`, `value`) VALUES ('50005', '1322781000', '76');
+
+
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('0', '20000');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('10000', '20000');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('0', '20001');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('10001', '20001');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('2', '20002');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('10003', '20002');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('1', '20003');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('10002', '20003');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('20000', '50000');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('20001', '50001');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('20002', '50002');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('20003', '50003');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('20000', '50004');
+INSERT INTO `relations` (`parent_id`, `child_id`) VALUES ('20000', '50005');
+
+
+INSERT INTO `sensors` (`id`, `name`, `address`, `data_unit`, `data_type`) VALUES ('50000', 'elct sen1', '2nd Floor, 1210 W. Dayton St.', 'kw', 'elct');
+INSERT INTO `sensors` (`id`, `name`, `address`, `data_unit`, `data_type`) VALUES ('50001', 'Data Center Elect. Sensor 0', 'Basement, 1210 W. Dayton St.', 'kw', 'elct');
+INSERT INTO `sensors` (`id`, `name`, `address`, `data_unit`, `data_type`) VALUES ('50002', 'Group Study Rooms Elect. Senso', '1st Floor, 215 N. Randall Ave.', 'kw', 'elct');
+INSERT INTO `sensors` (`id`, `name`, `address`, `data_unit`, `data_type`) VALUES ('50003', 'Living Environments Lab Elect.', '3rd Floor, 330 N. Orchard', 'kw', 'elct');
+INSERT INTO `sensors` (`id`, `name`, `address`, `data_unit`, `data_type`) VALUES ('50004', 'Computer Systems Lab Elect.1', '2nd Floor, 1210 W. Dayton St.', 'f', 'tmp');
+INSERT INTO `sensors` (`id`, `name`, `address`, `data_unit`, `data_type`) VALUES ('50005', 'Computer Systems Lab Elect.2', '2nd Floor, 1210 W. Dayton St.', 'f', 'tmp');
+
+
+INSERT INTO `services` (`id`, `name`, `address`) VALUES ('20000', 'Computer Systems Lab', '2nd Floor, 1210 W. Dayton St.');
+INSERT INTO `services` (`id`, `name`, `address`) VALUES ('20001', 'Data Center', 'Basement, 1210 W. Dayton St.');
+INSERT INTO `services` (`id`, `name`, `address`) VALUES ('20002', 'Group Study Rooms', '1st Floor, 215 N. Randall Ave.');
+INSERT INTO `services` (`id`, `name`, `address`) VALUES ('20003', 'Living Environments Lab', '3rd Floor, 330 N. Orchard');

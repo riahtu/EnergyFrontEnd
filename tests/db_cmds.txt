@@ -1,0 +1,88 @@
+DB command draws
+
+// select bld/dmt vs. sns
+select 
+       b.child_id as child 
+from relations as a, 
+     relations as b 
+where b.parent_id=a.child_id and 
+      a.parent_id=0 
+order by a.parent_id;
+
+
+
+// "join" the above table and sensor table
+select s.grandparent,
+       s.parent,
+       a.*
+from
+(select a.parent_id as grandparent, 
+        a.child_id as parent, 
+        b.child_id as child 
+ from relations as a, 
+      relations as b 
+ where b.parent_id=a.child_id and 
+       a.parent_id=0 
+ order by a.parent_id) as s,
+sensors as a
+where s.child=a.id;
+
+
+// select type and unit only
+select a.data_type,
+       a.data_unit
+from
+(select a.parent_id as grandparent, 
+        a.child_id as parent, 
+        b.child_id as child 
+ from relations as a, 
+      relations as b 
+ where b.parent_id=a.child_id and 
+       a.parent_id=0 
+ order by a.parent_id) as s,
+sensors as a
+where s.child=a.id
+group by data_type;
+
+
+
+// select service vs. sensor
+SELECT child_id
+FROM relations
+WHERE parent_id=20000;
+
+
+// join the above table and the sensor table
+select s.child_id,
+       a.*
+from
+(
+SELECT child_id
+FROM relations
+WHERE parent_id=20000
+) as s,
+sensors as a
+where s.child_id=a.id;
+
+
+// select type and unit only
+select a.data_type,
+       a.data_unit
+from
+(
+SELECT child_id
+FROM relations
+WHERE parent_id=20001
+) as s,
+sensors as a
+where s.child_id=a.id;
+
+
+// select (time, data) based on given ids
+select time, 
+       sum(value) 
+from raw_data 
+where id=50000 or 
+      id=50001 
+group by time; 
+
